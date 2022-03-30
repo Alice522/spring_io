@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @auther liuzhuochuan
@@ -19,9 +22,8 @@ public class FileUtil {
 
     //获取指定路径的File对象
     private final File dir;
-    //List存储File对象
-    private final ArrayList<File> files = new ArrayList<File>();
-
+    //LinkedMap存储File对象
+    private final LinkedHashMap<File,Integer> files = new LinkedHashMap<File, Integer>();
     //构造器传入一个路径
     @Autowired
     public FileUtil(String dir) {
@@ -30,11 +32,11 @@ public class FileUtil {
 
     //    遍历当前目录下的所有文件并添加到List集合中
     public void addDicFiles() {
-        addDicFiles(dir);
+        addDicFiles(dir,-1);
     }
 
     //    遍历指定目录下的所有文件并添加到files
-    public void addDicFiles(File dir) {
+    public void addDicFiles(File dir,int i) {
         if (dir.isDirectory()) {
 //            获取当前目录下的文件
             File[] fs = dir.listFiles(new FileFilter() {
@@ -46,16 +48,19 @@ public class FileUtil {
             assert fs != null;
             for (File f : fs) {
 //            将fs数组转换成List并添加到files
-                files.add(f);
-                addDicFiles(f);
+                files.put(f,i);
+                addDicFiles(f,i+1);
             }
         }
     }
 
     public void retrieve(){
         addDicFiles();
-        for(File f:files){
-            System.out.println(f.getName());
+        for(Map.Entry<File,Integer> f : files.entrySet()){
+            for(int i=0;i<f.getValue();i++){
+                System.out.print("\t");
+            }
+            System.out.println("|--" + f.getKey().getName());
         }
     }
 }
