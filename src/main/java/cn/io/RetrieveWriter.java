@@ -41,7 +41,6 @@ public class RetrieveWriter {
         }
 
 //        流的刷新和关闭
-        writer.flush();
         writer.close();
     }
 }

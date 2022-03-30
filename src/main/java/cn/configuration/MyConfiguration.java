@@ -25,12 +25,12 @@ public class MyConfiguration {
 
     @Bean
     public FileWriter fileWriter() throws IOException {
-        return new FileWriter("result.txt");
+        return new FileWriter("result1.txt");
     }
 
     @Bean
     public FileUtil fileUtil(){
-        return new FileUtil("C:\\Users");
+        return new FileUtil(".");
     }
 
 }
