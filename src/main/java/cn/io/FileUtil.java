@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -39,28 +37,21 @@ public class FileUtil {
     public void addDicFiles(File dir,int i) {
         if (dir.isDirectory()) {
 //            获取当前目录下的文件
-            File[] fs = dir.listFiles(new FileFilter() {
-                public boolean accept(File pathname) {
-                    return true;
-                }
-            });
+            File[] fs = dir.listFiles();
 
-            assert fs != null;
-            for (File f : fs) {
-//            将fs数组转换成List并添加到files
-                files.put(f,i);
-                addDicFiles(f,i+1);
+//            遍历File数组并添加到files中
+            if(fs != null) {
+                for (File f : fs) {
+                    files.put(f, i);
+                    addDicFiles(f, i + 1);
+                }
             }
         }
     }
 
-    public void retrieve(){
+//    返回一个Map对象
+    public LinkedHashMap<File, Integer> getFiles() {
         addDicFiles();
-        for(Map.Entry<File,Integer> f : files.entrySet()){
-            for(int i=0;i<f.getValue();i++){
-                System.out.print("\t");
-            }
-            System.out.println("|--" + f.getKey().getName());
-        }
+        return files;
     }
 }
